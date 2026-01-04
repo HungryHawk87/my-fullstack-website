@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Share Purchase Agreement Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -13,10 +15,29 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: white;
             min-height: 100vh;
         }
 
+        .print-hide {
+            display: block;
+        }
+
+        @media print {
+            .print-hide {
+                display: none !important;
+            }
+            body {
+                background: white;
+            }
+            .document {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+        }
+
+        /* Header */
         .header {
             background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: white;
@@ -28,25 +49,31 @@
         }
 
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .header-title {
             font-size: 1.25rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .button-group {
             display: flex;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 0.5rem 1rem;
+            padding: 0.625rem 1.25rem;
             border: none;
             border-radius: 0.5rem;
             font-weight: 600;
@@ -54,7 +81,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            font-size: 0.875rem;
         }
 
         .btn-download {
@@ -64,6 +92,7 @@
 
         .btn-download:hover {
             background: #15803d;
+            transform: translateY(-2px);
         }
 
         .btn-print {
@@ -73,6 +102,7 @@
 
         .btn-print:hover {
             background: #eff6ff;
+            transform: translateY(-2px);
         }
 
         .btn-back {
@@ -84,24 +114,29 @@
             background: #475569;
         }
 
+        /* Edit Form */
         .edit-form {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
 
         .form-container {
-            background: white;
+            background: #f8fafc;
             border-radius: 1rem;
             padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 2px solid #e2e8f0;
         }
 
         .form-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: bold;
             margin-bottom: 1.5rem;
             color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .form-grid {
@@ -116,15 +151,15 @@
         }
 
         .form-group label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #64748b;
             margin-bottom: 0.5rem;
         }
 
         .form-group input {
-            padding: 0.75rem;
-            border: 2px solid #e2e8f0;
+            padding: 0.5rem 0.75rem;
+            border: 2px solid #cbd5e1;
             border-radius: 0.5rem;
             font-size: 0.875rem;
         }
@@ -134,14 +169,16 @@
             border-color: #2563eb;
         }
 
+        /* Document Container */
         .document {
-            max-width: 900px;
+            max-width: 850px;
             margin: 2rem auto;
             background: white;
             padding: 3rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
+        /* Document Header */
         .doc-header {
             text-align: center;
             margin-bottom: 3rem;
@@ -150,26 +187,32 @@
         }
 
         .doc-header h1 {
-            font-size: 2.5rem;
-            color: #1e293b;
+            font-size: 2.25rem;
+            color: #0f172a;
             margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
         .doc-header p {
             font-size: 1.125rem;
-            color: #64748b;
+            color: #475569;
+        }
+
+        .doc-date-box {
+            display: inline-block;
+            background: #dbeafe;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
         }
 
         .doc-date {
-            display: inline-block;
-            background: #dbeafe;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
+            font-size: 0.875rem;
             font-weight: 600;
             color: #1e40af;
         }
 
+        /* Sections */
         .section {
             margin-bottom: 2rem;
         }
@@ -180,6 +223,14 @@
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #dbeafe;
+            font-weight: 700;
+        }
+
+        .section h3 {
+            font-size: 1.25rem;
+            color: #0f172a;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
         }
 
         .party-box {
@@ -189,21 +240,30 @@
             margin-bottom: 1.5rem;
         }
 
-        .party-box h3 {
-            font-size: 1.25rem;
-            color: #1e293b;
-            margin-bottom: 1rem;
-        }
-
         .party-info {
             font-size: 0.875rem;
             line-height: 1.8;
+            color: #334155;
+        }
+
+        .party-info p {
+            margin-bottom: 0.5rem;
         }
 
         .party-info strong {
             color: #475569;
+            font-weight: 600;
         }
 
+        .party-note {
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* Highlight Box */
         .highlight-box {
             background: #dbeafe;
             padding: 1.5rem;
@@ -212,36 +272,61 @@
             margin: 1.5rem 0;
         }
 
+        .highlight-box p {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .highlight-box .price-section {
+            padding-top: 0.75rem;
+            border-top: 2px solid #bfdbfe;
+            margin-top: 0.75rem;
+        }
+
         .highlight-box .price {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: #1e40af;
-            margin-top: 0.5rem;
         }
 
-        .warning-box {
-            background: #fef3c7;
-            border: 2px solid #fbbf24;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-top: 3rem;
+        .highlight-box .price-detail {
+            font-size: 0.75rem;
+            font-style: italic;
+            color: #1e40af;
+            margin-top: 0.25rem;
         }
 
-        .warning-box h3 {
-            color: #92400e;
+        /* Text Styles */
+        .section-text {
+            font-size: 0.875rem;
+            line-height: 1.75;
+            color: #334155;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-text strong {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* Lists */
+        ul {
+            margin-left: 2rem;
             margin-bottom: 1rem;
         }
 
-        .warning-box p, .warning-box ul {
-            font-size: 0.75rem;
-            color: #92400e;
-            line-height: 1.6;
+        ul li {
+            font-size: 0.875rem;
+            line-height: 1.75;
+            color: #334155;
+            margin-bottom: 0.25rem;
         }
 
+        /* Signature Section */
         .signature-section {
             margin-top: 3rem;
             padding-top: 2rem;
-            border-top: 2px solid #e2e8f0;
         }
 
         .signature-box {
@@ -258,23 +343,57 @@
             margin: 1rem 0;
         }
 
-        @media print {
-            .header, .edit-form, .btn {
-                display: none;
-            }
-            .document {
-                box-shadow: none;
-                padding: 0;
-            }
-            body {
-                background: white;
-            }
+        .signature-info {
+            font-size: 0.875rem;
+            color: #334155;
+            margin-top: 1rem;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .warning-box h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warning-box p, .warning-box ul {
+            font-size: 0.75rem;
+            color: #92400e;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .warning-box ul {
+            margin-left: 1.5rem;
+        }
+
+        .warning-box strong {
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .doc-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e2e8f0;
+            font-size: 0.875rem;
+            color: #64748b;
         }
 
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                gap: 1rem;
             }
             .button-group {
                 width: 100%;
@@ -290,14 +409,16 @@
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="header print-hide">
         <div class="header-content">
-            <div class="header-title">Share Purchase Agreement Generator</div>
+            <div class="header-title">
+                📄 Share Purchase Agreement Generator
+            </div>
             <div class="button-group">
                 <button class="btn btn-back" onclick="window.location.href='index.html'">
                     ← Back to Home
                 </button>
-                <button class="btn btn-download" onclick="window.print()">
+                <button class="btn btn-download" onclick="downloadPDF()">
                     📥 Download PDF
                 </button>
                 <button class="btn btn-print" onclick="window.print()">
@@ -307,9 +428,9 @@
         </div>
     </div>
 
-    <div class="edit-form">
+    <div class="edit-form print-hide">
         <div class="form-container">
-            <h2 class="form-title">Edit Agreement Details</h2>
+            <h2 class="form-title">📝 Edit Agreement Details</h2>
             <div class="form-grid">
                 <div class="form-group">
                     <label>Seller Name</label>
@@ -343,7 +464,9 @@
         <div class="doc-header">
             <h1>SHARE PURCHASE AGREEMENT</h1>
             <p>Legal Contract for the Sale and Purchase of Company Shares</p>
-            <div class="doc-date">Document Date: <span id="displayDate">December 28, 2025</span></div>
+            <div class="doc-date-box">
+                <p class="doc-date">Document Date: <span id="displayDate">December 28, 2025</span></p>
+            </div>
         </div>
 
         <div class="section">
@@ -353,61 +476,121 @@
                 <h3>SELLER</h3>
                 <div class="party-info">
                     <p><strong>Full Legal Name:</strong> <span id="displaySellerName">Sooraj Omanakuttan</span></p>
-                    <p><strong>Acting For:</strong> <span id="displaySellerCompany">JMM Trading Company</span></p>
+                    <p><strong>Acting For and On Behalf Of:</strong> <span id="displaySellerCompany">JMM Trading Company</span></p>
+                    <p><strong>Company Registration Number:</strong> LLC-2020-123456</p>
+                    <p><strong>Registered Address:</strong> 123 Business Avenue, Suite 400, New York, NY 10001</p>
                 </div>
+                <p class="party-note">
+                    Hereinafter referred to as the "Seller", which expression shall, unless repugnant to the context, 
+                    include its successors, assigns, and permitted representatives.
+                </p>
             </div>
 
             <div class="party-box">
                 <h3>BUYER</h3>
                 <div class="party-info">
                     <p><strong>Full Legal Name:</strong> <span id="displayBuyerName">Solomon John</span></p>
+                    <p><strong>Nationality:</strong> United States</p>
+                    <p><strong>Residential Address:</strong> 456 Investment Street, Apartment 12B, New York, NY 10002</p>
+                    <p><strong>Identification Number:</strong> SSN: XXX-XX-1234</p>
                 </div>
+                <p class="party-note">
+                    Hereinafter referred to as the "Buyer", which expression shall include heirs, legal representatives, and permitted assigns.
+                </p>
             </div>
+
+            <p class="section-text">
+                The Seller and Buyer are hereinafter collectively referred to as the <strong>"Parties"</strong> and individually as a <strong>"Party"</strong>.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>RECITALS</h2>
+            <p class="section-text"><strong>WHEREAS,</strong> <span id="recitalCompany1">JMM Trading Company</span> is a duly organized and validly existing company engaged in lawful business activities;</p>
+            <p class="section-text"><strong>WHEREAS,</strong> the Seller is duly authorized to sell and transfer shares owned or controlled by <span id="recitalCompany2">JMM Trading Company</span>;</p>
+            <p class="section-text"><strong>WHEREAS,</strong> the Buyer desires to acquire a specified quantity of shares in <span id="recitalCompany3">JMM Trading Company</span> for investment purposes;</p>
+            <p class="section-text"><strong>WHEREAS,</strong> the Parties wish to set forth the terms and conditions governing the purchase, transfer, ownership, rights, and obligations associated with such shares;</p>
+            <p class="section-text"><strong>NOW, THEREFORE,</strong> in consideration of the mutual covenants, agreements, representations, and warranties contained herein, and for other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, the Parties agree as follows:</p>
         </div>
 
         <div class="section">
             <h2>ARTICLE 2: SALE AND PURCHASE OF SHARES</h2>
+            <p class="section-text"><strong>2.1 Agreement to Sell and Purchase.</strong> Subject to the terms and conditions set forth in this Agreement, the Seller hereby agrees to sell, assign, transfer, and deliver to the Buyer, and the Buyer hereby agrees to purchase and acquire from the Seller, the following:</p>
+            
             <div class="highlight-box">
                 <p><strong>Company Name:</strong> <span id="displayCompany2">JMM Trading Company</span></p>
                 <p><strong>Type of Security:</strong> Common Stock / Equity Shares</p>
                 <p><strong>Number of Shares:</strong> <span id="displayShares">100,000</span> shares</p>
-                <p><strong>Price Per Share:</strong> $<span id="displayPrice">10.50</span></p>
-                <p class="price">Total Purchase Price: $<span id="displayTotal">1,050,000.00</span></p>
+                <p><strong>Price Per Share:</strong> $<span id="displayPrice">0.20</span></p>
+                <div class="price-section">
+                    <p class="price"><strong>Total Purchase Price:</strong> $<span id="displayTotal">80,000.00</span></p>
+                    <p class="price-detail">(<span id="displayTotalWords">80,000.00</span> United States Dollars)</p>
+                </div>
             </div>
+            
+            <p class="section-text"><strong>2.2 Nature of Transaction.</strong> This transaction represents an outright purchase and sale of the Shares. It does not constitute, and shall not be construed as, a loan, partnership, joint venture, security offering, investment contract, or any other form of business relationship beyond the sale and purchase of equity shares.</p>
+            
+            <p class="section-text"><strong>2.3 Rights and Privileges.</strong> The Shares being transferred include all rights, privileges, benefits, and obligations attached thereto, including but not limited to voting rights, dividend rights, and rights to participate in any future offerings, subject to the governing documents of the Company and applicable law.</p>
+            
+            <p class="section-text"><strong>2.4 Free and Clear Transfer.</strong> The Seller warrants that the Shares are being sold free and clear of all liens, pledges, charges, encumbrances, security interests, claims, and restrictions on transfer, except as may be imposed by applicable securities laws.</p>
         </div>
 
         <div class="signature-section">
             <h2>EXECUTION</h2>
-            <p>IN WITNESS WHEREOF, the Parties have executed this Share Purchase Agreement as of the date first written above.</p>
+            <p class="section-text">IN WITNESS WHEREOF, the Parties have executed this Share Purchase Agreement as of the date first written above.</p>
             
             <div class="signature-box">
                 <h3>SELLER:</h3>
                 <div class="signature-line"></div>
-                <p><strong>Name:</strong> <span id="displaySellerSig">Sooraj Omanakuttan</span></p>
-                <p><strong>For:</strong> <span id="displayCompanySig">JMM Trading Company</span></p>
+                <div class="signature-info">
+                    <p><strong>Name:</strong> <span id="displaySellerSig">Sooraj Omanakuttan</span></p>
+                    <p><strong>For and On Behalf Of:</strong> <span id="displayCompanySig">JMM Trading Company</span></p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-size: 0.75rem; color: #64748b;">Date: _______________</p>
+                </div>
             </div>
 
             <div class="signature-box">
                 <h3>BUYER:</h3>
                 <div class="signature-line"></div>
-                <p><strong>Name:</strong> <span id="displayBuyerSig">Solomon John</span></p>
+                <div class="signature-info">
+                    <p><strong>Name:</strong> <span id="displayBuyerSig">Solomon John</span></p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-size: 0.75rem; color: #64748b;">Date: _______________</p>
+                </div>
+            </div>
+
+            <div class="signature-box">
+                <h3>WITNESS:</h3>
+                <div class="signature-line"></div>
+                <div class="signature-info">
+                    <p><strong>Printed Name:</strong> ___________________________</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-size: 0.75rem; color: #64748b;">Date: _______________</p>
+                </div>
             </div>
         </div>
 
         <div class="warning-box">
             <h3>⚠️ IMPORTANT LEGAL NOTICE</h3>
-            <p>This document has been prepared as a template for informational purposes only. It does not constitute legal advice.</p>
+            <p>This document has been prepared as a template for informational and educational purposes only. It does not constitute legal advice, and should not be relied upon as a substitute for consultation with a qualified attorney.</p>
             <p><strong>BEFORE USING THIS AGREEMENT:</strong></p>
             <ul>
-                <li>Consult with legal counsel licensed in your jurisdiction</li>
-                <li>Ensure compliance with all applicable laws</li>
-                <li>Verify all securities law requirements are met</li>
-                <li>Obtain appropriate tax advice</li>
+                <li>Consult with legal counsel licensed to practice in your jurisdiction</li>
+                <li>Ensure compliance with all applicable federal, state, and local laws</li>
+                <li>Verify that all securities law requirements are met</li>
+                <li>Obtain appropriate tax advice regarding the transaction</li>
+                <li>Conduct proper due diligence on all parties and the shares being transferred</li>
             </ul>
+            <p><strong>The creator of this document assumes no liability for any use or reliance upon this template. Each party should seek independent legal and financial advice before entering into any share purchase agreement.</strong></p>
         </div>
 
-        <div style="text-align: center; margin-top: 2rem; color: #64748b;">
+        <div class="doc-footer">
             <p>— END OF DOCUMENT —</p>
+            <p style="margin-top: 0.5rem;">Total Pages: 12 | Document ID: SPA-<span id="docId">20251228</span></p>
         </div>
     </div>
 
@@ -454,10 +637,76 @@
             document.getElementById('displayShares').textContent = formatNumber(totalShares);
             document.getElementById('displayPrice').textContent = formatCurrency(sharePrice);
             document.getElementById('displayTotal').textContent = formatCurrency(totalPrice);
+            document.getElementById('displayTotalWords').textContent = formatCurrency(totalPrice).replace('$', '');
             document.getElementById('displayDate').textContent = formatDate(agreementDate);
             document.getElementById('displaySellerSig').textContent = sellerName;
             document.getElementById('displayCompanySig').textContent = sellerCompany;
             document.getElementById('displayBuyerSig').textContent = buyerName;
+            
+            // Update recitals
+            document.getElementById('recitalCompany1').textContent = sellerCompany;
+            document.getElementById('recitalCompany2').textContent = sellerCompany;
+            document.getElementById('recitalCompany3').textContent = sellerCompany;
+            
+            // Update document ID
+            const docId = agreementDate.replace(/-/g, '');
+            document.getElementById('docId').textContent = docId;
+        }
+
+        // Download PDF function
+        async function downloadPDF() {
+            const button = event.target;
+            button.textContent = '⏳ Generating PDF...';
+            button.disabled = true;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const element = document.getElementById('documentContent');
+                
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const imgWidth = 210;
+                const pageHeight = 297;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                const fileName = `Share_Purchase_Agreement_${document.getElementById('agreementDate').value}.pdf`;
+                pdf.save(fileName);
+
+                button.textContent = '✅ Downloaded!';
+                setTimeout(() => {
+                    button.textContent = '📥 Download PDF';
+                    button.disabled = false;
+                }, 2000);
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try printing instead (Ctrl+P or Cmd+P).');
+                button.textContent = '📥 Download PDF';
+                button.disabled = false;
+            }
         }
 
         // Add event listeners to all inputs
