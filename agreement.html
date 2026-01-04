@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Purchase Agreement Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-download {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #15803d;
+        }
+
+        .btn-print {
+            background: white;
+            color: #2563eb;
+        }
+
+        .btn-print:hover {
+            background: #eff6ff;
+        }
+
+        .btn-back {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: #475569;
+        }
+
+        .edit-form {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .document {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            padding: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .doc-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 4px solid #2563eb;
+        }
+
+        .doc-header h1 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-header p {
+            font-size: 1.125rem;
+            color: #64748b;
+        }
+
+        .doc-date {
+            display: inline-block;
+            background: #dbeafe;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #dbeafe;
+        }
+
+        .party-box {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .party-box h3 {
+            font-size: 1.25rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .party-info {
+            font-size: 0.875rem;
+            line-height: 1.8;
+        }
+
+        .party-info strong {
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: #dbeafe;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #2563eb;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e40af;
+            margin-top: 0.5rem;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .warning-box h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+
+        .warning-box p, .warning-box ul {
+            font-size: 0.75rem;
+            color: #92400e;
+            line-height: 1.6;
+        }
+
+        .signature-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .signature-box {
+            border: 2px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: #f8fafc;
+        }
+
+        .signature-line {
+            border-bottom: 2px solid #64748b;
+            height: 3rem;
+            margin: 1rem 0;
+        }
+
+        @media print {
+            .header, .edit-form, .btn {
+                display: none;
+            }
+            .document {
+                box-shadow: none;
+                padding: 0;
+            }
+            body {
+                background: white;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .button-group {
+                width: 100%;
+                justify-content: center;
+            }
+            .document {
+                padding: 1.5rem;
+            }
+            .doc-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">Share Purchase Agreement Generator</div>
+            <div class="button-group">
+                <button class="btn btn-back" onclick="window.location.href='index.html'">
+                    ← Back to Home
+                </button>
+                <button class="btn btn-download" onclick="window.print()">
+                    📥 Download PDF
+                </button>
+                <button class="btn btn-print" onclick="window.print()">
+                    🖨️ Print
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="edit-form">
+        <div class="form-container">
+            <h2 class="form-title">Edit Agreement Details</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Seller Name</label>
+                    <input type="text" id="sellerName" value="Sooraj Omanakuttan">
+                </div>
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input type="text" id="sellerCompany" value="JMM Trading Company">
+                </div>
+                <div class="form-group">
+                    <label>Buyer Name</label>
+                    <input type="text" id="buyerName" value="Solomon John">
+                </div>
+                <div class="form-group">
+                    <label>Price Per Share ($)</label>
+                    <input type="number" id="sharePrice" value="10.50" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Total Shares</label>
+                    <input type="number" id="totalShares" value="100000">
+                </div>
+                <div class="form-group">
+                    <label>Agreement Date</label>
+                    <input type="date" id="agreementDate" value="2025-12-28">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="document" id="documentContent">
+        <div class="doc-header">
+            <h1>SHARE PURCHASE AGREEMENT</h1>
+            <p>Legal Contract for the Sale and Purchase of Company Shares</p>
+            <div class="doc-date">Document Date: <span id="displayDate">December 28, 2025</span></div>
+        </div>
+
+        <div class="section">
+            <h2>PARTIES TO THIS AGREEMENT</h2>
+            
+            <div class="party-box">
+                <h3>SELLER</h3>
+                <div class="party-info">
+                    <p><strong>Full Legal Name:</strong> <span id="displaySellerName">Sooraj Omanakuttan</span></p>
+                    <p><strong>Acting For:</strong> <span id="displaySellerCompany">JMM Trading Company</span></p>
+                </div>
+            </div>
+
+            <div class="party-box">
+                <h3>BUYER</h3>
+                <div class="party-info">
+                    <p><strong>Full Legal Name:</strong> <span id="displayBuyerName">Solomon John</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 2: SALE AND PURCHASE OF SHARES</h2>
+            <div class="highlight-box">
+                <p><strong>Company Name:</strong> <span id="displayCompany2">JMM Trading Company</span></p>
+                <p><strong>Type of Security:</strong> Common Stock / Equity Shares</p>
+                <p><strong>Number of Shares:</strong> <span id="displayShares">100,000</span> shares</p>
+                <p><strong>Price Per Share:</strong> $<span id="displayPrice">10.50</span></p>
+                <p class="price">Total Purchase Price: $<span id="displayTotal">1,050,000.00</span></p>
+            </div>
+        </div>
+
+        <div class="signature-section">
+            <h2>EXECUTION</h2>
+            <p>IN WITNESS WHEREOF, the Parties have executed this Share Purchase Agreement as of the date first written above.</p>
+            
+            <div class="signature-box">
+                <h3>SELLER:</h3>
+                <div class="signature-line"></div>
+                <p><strong>Name:</strong> <span id="displaySellerSig">Sooraj Omanakuttan</span></p>
+                <p><strong>For:</strong> <span id="displayCompanySig">JMM Trading Company</span></p>
+            </div>
+
+            <div class="signature-box">
+                <h3>BUYER:</h3>
+                <div class="signature-line"></div>
+                <p><strong>Name:</strong> <span id="displayBuyerSig">Solomon John</span></p>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <h3>⚠️ IMPORTANT LEGAL NOTICE</h3>
+            <p>This document has been prepared as a template for informational purposes only. It does not constitute legal advice.</p>
+            <p><strong>BEFORE USING THIS AGREEMENT:</strong></p>
+            <ul>
+                <li>Consult with legal counsel licensed in your jurisdiction</li>
+                <li>Ensure compliance with all applicable laws</li>
+                <li>Verify all securities law requirements are met</li>
+                <li>Obtain appropriate tax advice</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; color: #64748b;">
+            <p>— END OF DOCUMENT —</p>
+        </div>
+    </div>
+
+    <script>
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        // Format number with commas
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-US').format(num);
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Update document
+        function updateDocument() {
+            const sellerName = document.getElementById('sellerName').value;
+            const sellerCompany = document.getElementById('sellerCompany').value;
+            const buyerName = document.getElementById('buyerName').value;
+            const sharePrice = parseFloat(document.getElementById('sharePrice').value);
+            const totalShares = parseFloat(document.getElementById('totalShares').value);
+            const agreementDate = document.getElementById('agreementDate').value;
+
+            const totalPrice = sharePrice * totalShares;
+
+            // Update all display elements
+            document.getElementById('displaySellerName').textContent = sellerName;
+            document.getElementById('displaySellerCompany').textContent = sellerCompany;
+            document.getElementById('displayBuyerName').textContent = buyerName;
+            document.getElementById('displayCompany2').textContent = sellerCompany;
+            document.getElementById('displayShares').textContent = formatNumber(totalShares);
+            document.getElementById('displayPrice').textContent = formatCurrency(sharePrice);
+            document.getElementById('displayTotal').textContent = formatCurrency(totalPrice);
+            document.getElementById('displayDate').textContent = formatDate(agreementDate);
+            document.getElementById('displaySellerSig').textContent = sellerName;
+            document.getElementById('displayCompanySig').textContent = sellerCompany;
+            document.getElementById('displayBuyerSig').textContent = buyerName;
+        }
+
+        // Add event listeners to all inputs
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', updateDocument);
+        });
+
+        // Initial update
+        updateDocument();
+    </script>
+</body>
+</html>
