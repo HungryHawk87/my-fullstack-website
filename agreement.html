@@ -150,6 +150,10 @@
             flex-direction: column;
         }
 
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
         .form-group label {
             font-size: 0.75rem;
             font-weight: 600;
@@ -157,14 +161,22 @@
             margin-bottom: 0.5rem;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group textarea {
             padding: 0.5rem 0.75rem;
             border: 2px solid #cbd5e1;
             border-radius: 0.5rem;
             font-size: 0.875rem;
+            font-family: inherit;
         }
 
-        .form-group input:focus {
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: #2563eb;
         }
@@ -176,6 +188,50 @@
             background: white;
             padding: 3rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Logo Header */
+        .logo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .logo-container {
+            flex: 1;
+        }
+
+        .logo {
+            max-width: 120px;
+            height: auto;
+            display: block;
+        }
+
+        .company-info {
+            flex: 2;
+            text-align: right;
+        }
+
+        .company-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .company-name .dai {
+            color: #1e40af;
+            font-weight: 800;
+        }
+
+        .company-tagline {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
         }
 
         /* Document Header */
@@ -391,6 +447,18 @@
             color: #64748b;
         }
 
+        /* Subsection numbering */
+        .subsection {
+            margin-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .subsection-title {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -404,6 +472,23 @@
             }
             .doc-header h1 {
                 font-size: 1.75rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .logo-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .logo {
+                margin: 0 auto;
+            }
+            .company-info {
+                text-align: center;
+            }
+            .company-name {
+                font-size: 1.25rem;
             }
         }
     </style>
@@ -445,6 +530,10 @@
                     <input type="text" id="buyerName" value="Solomon John">
                 </div>
                 <div class="form-group">
+                    <label>Buyer Address</label>
+                    <textarea id="buyerAddress">456 Investment Street, Apartment 12B, New York, NY 10002</textarea>
+                </div>
+                <div class="form-group">
                     <label>Price Per Share ($)</label>
                     <input type="number" id="sharePrice" value="10.50" step="0.01">
                 </div>
@@ -461,6 +550,21 @@
     </div>
 
     <div class="document" id="documentContent">
+        <!-- LOGO HEADER -->
+        <div class="logo-header">
+            <div class="logo-container">
+                <img src="https://f1443029.pinit.eth.limo/" alt="Daily AI Logo" class="logo" onerror="this.style.display='none'">
+            </div>
+            <div class="company-info">
+                <div class="company-name">Daily AI <span class="dai">(DAI)</span></div>
+                <div class="company-tagline">Artificial Intelligence Solutions & Digital Innovation</div>
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                    <div>Registered Office: 456 Tech Innovation Drive, Suite 300</div>
+                    <div>San Francisco, CA 94105 | contact@daily-ai.com</div>
+                </div>
+            </div>
+        </div>
+
         <div class="doc-header">
             <h1>SHARE PURCHASE AGREEMENT</h1>
             <p>Legal Contract for the Sale and Purchase of Company Shares</p>
@@ -491,7 +595,7 @@
                 <div class="party-info">
                     <p><strong>Full Legal Name:</strong> <span id="displayBuyerName">Solomon John</span></p>
                     <p><strong>Nationality:</strong> United States</p>
-                    <p><strong>Residential Address:</strong> 456 Investment Street, Apartment 12B, New York, NY 10002</p>
+                    <p><strong>Residential Address:</strong> <span id="displayBuyerAddress">456 Investment Street, Apartment 12B, New York, NY 10002</span></p>
                     <p><strong>Identification Number:</strong> SSN: XXX-XX-1234</p>
                 </div>
                 <p class="party-note">
@@ -535,6 +639,398 @@
             <p class="section-text"><strong>2.4 Free and Clear Transfer.</strong> The Seller warrants that the Shares are being sold free and clear of all liens, pledges, charges, encumbrances, security interests, claims, and restrictions on transfer, except as may be imposed by applicable securities laws.</p>
         </div>
 
+        <!-- NEW SECTIONS ADDED HERE -->
+        <div class="section">
+            <h2>ARTICLE 3: PAYMENT TERMS AND CONDITIONS</h2>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>3.1 Payment Method.</strong> The Buyer shall remit the Purchase Price to the Seller by one or more of the following methods, as mutually agreed by the Parties:</p>
+                <ul>
+                    <li>Wire transfer to a bank account designated in writing by the Seller;</li>
+                    <li>Certified bank check or cashier's check payable to the Seller;</li>
+                    <li>Electronic funds transfer through a recognized financial institution;</li>
+                    <li>Any other lawful payment method mutually agreed upon by the Parties in writing.</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>3.2 Payment Timing.</strong> The full Purchase Price shall be paid by the Buyer to the Seller on or before the Closing Date. Payment shall be made in immediately available funds and shall be received by the Seller no later than 3:00 PM local time on the Closing Date.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>3.3 Payment Confirmation.</strong> Upon receipt of the Purchase Price, the Seller shall promptly provide written confirmation of receipt to the Buyer. Such confirmation shall specify the amount received, date of receipt, and method of payment.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>3.4 Final and Irrevocable Payment.</strong> Once the Purchase Price has been paid by the Buyer and received by the Seller, and the Shares have been duly transferred, the payment shall be considered final, complete, and irrevocable.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>3.5 No Refunds.</strong> The Parties expressly acknowledge and agree that no refunds, returns, or reversals of payment shall be permitted after the successful transfer of the Shares and receipt of full payment, except as may be required by applicable law or as expressly provided in this Agreement.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>3.6 Payment Allocation.</strong> The Purchase Price represents the total consideration for the Shares and includes all applicable fees, charges, and expenses associated with the transfer, except as otherwise specifically provided in this Agreement.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>3.7 Currency.</strong> All amounts referenced in this Agreement are expressed in United States Dollars (USD). Payment shall be made in USD unless otherwise agreed in writing by both Parties.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 4: DELIVERY AND TRANSFER OF SHARES</h2>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>4.1 Delivery Obligations.</strong> At the Closing, simultaneously with the payment of the Purchase Price, the Seller shall deliver or cause to be delivered to the Buyer the following documents and instruments:</p>
+                <ul>
+                    <li>Duly executed stock certificates representing the Shares, or confirmation of book-entry position;</li>
+                    <li>Stock powers or instruments of transfer executed in blank or in favor of the Buyer;</li>
+                    <li>Corporate resolutions authorizing the transfer of the Shares;</li>
+                    <li>All other documents reasonably necessary to effect the valid transfer of the Shares;</li>
+                    <li>Evidence that all required corporate approvals have been obtained;</li>
+                    <li>A certificate of good standing for the Company (if applicable).</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>4.2 Form of Delivery.</strong> The Shares may be delivered in certificated form or through book-entry transfer, as determined by the Company's transfer agent and the Parties' mutual agreement. If delivered in certificated form, the certificates shall be properly endorsed for transfer.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>4.3 Transfer on Company Records.</strong> Immediately following the Closing, the Seller shall take, or cause the Company to take, all necessary actions to record the transfer of the Shares to the Buyer in the official stock transfer books and records of the Company. The Buyer shall be entitled to receive written confirmation of such registration.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>4.4 Transfer Taxes and Fees.</strong> The Seller shall be responsible for and shall pay all transfer taxes, stamp duties, recording fees, and similar charges levied by any governmental authority in connection with the transfer of the Shares. The Buyer shall reimburse the Seller for any transfer agent fees specifically attributable to the issuance of new certificates in the Buyer's name.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>4.5 Completion of Transfer.</strong> The transfer of the Shares shall be deemed complete and effective upon: (a) receipt by the Seller of the full Purchase Price; (b) delivery to the Buyer of all documents specified in Section 4.1; and (c) registration of the Shares in the Buyer's name in the Company's books and records.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>4.6 Risk of Loss.</strong> Risk of loss and all incidents of ownership of the Shares, including voting rights and dividend entitlements, shall pass from the Seller to the Buyer upon completion of the transfer as defined in Section 4.5 above.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 5: REPRESENTATIONS AND WARRANTIES OF SELLER</h2>
+            <p class="section-text">The Seller hereby represents and warrants to the Buyer that, as of the date hereof and as of the Closing Date, the following statements are true, accurate, and complete:</p>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.1 Authority and Capacity.</strong> The Seller has full legal right, power, capacity, and authority to enter into this Agreement and to consummate the transactions contemplated hereby. If the Seller is acting on behalf of the Company, the Seller has been duly authorized by all necessary corporate action to execute and deliver this Agreement and to transfer the Shares.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.2 Valid and Binding Agreement.</strong> This Agreement constitutes a legal, valid, and binding obligation of the Seller, enforceable against the Seller in accordance with its terms, subject only to applicable bankruptcy, insolvency, and similar laws affecting creditors' rights generally.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.3 Ownership of Shares.</strong> The Seller is the lawful, record, and beneficial owner of the Shares, with good and marketable title thereto. The Shares are owned free and clear of all liens, pledges, security interests, charges, encumbrances, equities, claims, options, rights of first refusal, or any other restrictions on transfer of any nature whatsoever.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.4 No Conflicts or Violations.</strong> The execution, delivery, and performance of this Agreement by the Seller does not and will not: (a) violate any provision of any agreement, contract, or instrument to which the Seller or the Company is a party; (b) violate any judgment, order, decree, statute, law, rule, or regulation applicable to the Seller or the Company; or (c) require any consent, approval, or authorization of any person or governmental authority that has not been obtained.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.5 No Litigation.</strong> There is no action, suit, proceeding, inquiry, or investigation pending or, to the Seller's knowledge, threatened against the Seller or the Company that would prevent the Seller from transferring the Shares or performing its obligations under this Agreement.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.6 Compliance with Laws.</strong> The sale and transfer of the Shares pursuant to this Agreement comply with all applicable federal, state, and local laws, rules, and regulations, including all applicable securities laws and regulations.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.7 Valid Issuance.</strong> The Shares have been duly authorized and validly issued by the Company, are fully paid and non-assessable, and were issued in compliance with all applicable laws and the Company's governing documents.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.8 Company Standing.</strong> To the Seller's knowledge, the Company is duly organized, validly existing, and in good standing under the laws of its jurisdiction of incorporation and has all requisite corporate power and authority to own and operate its properties and to carry on its business as now being conducted.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.9 No Misrepresentation.</strong> No representation or warranty made by the Seller in this Agreement contains any untrue statement of a material fact or omits to state a material fact necessary to make the statements herein, in light of the circumstances under which they were made, not misleading.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>5.10 Survival of Representations.</strong> All representations and warranties of the Seller contained in this Agreement shall survive the Closing for a period of two (2) years, except for representations regarding title to the Shares, which shall survive indefinitely.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 6: REPRESENTATIONS AND WARRANTIES OF BUYER</h2>
+            <p class="section-text">The Buyer hereby represents and warrants to the Seller that, as of the date hereof and as of the Closing Date, the following statements are true, accurate, and complete:</p>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.1 Authority and Capacity.</strong> The Buyer has full legal right, power, capacity, and authority to enter into this Agreement and to consummate the transactions contemplated hereby. The Buyer has taken all necessary action to authorize the execution, delivery, and performance of this Agreement.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.2 Valid and Binding Agreement.</strong> This Agreement constitutes a legal, valid, and binding obligation of the Buyer, enforceable against the Buyer in accordance with its terms, subject only to applicable bankruptcy, insolvency, and similar laws affecting creditors' rights generally.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.3 Investment Purpose.</strong> The Buyer is acquiring the Shares solely for the Buyer's own account for investment purposes and not with a view to, or for resale in connection with, any distribution or public offering of the Shares in violation of applicable securities laws.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.4 Investment Experience and Sophistication.</strong> The Buyer has such knowledge, sophistication, and experience in business and financial matters that the Buyer is capable of evaluating the merits and risks of the investment in the Shares. The Buyer is able to bear the economic risk of the investment in the Shares and can afford a complete loss of such investment.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.5 Access to Information.</strong> The Buyer has had full access to all information regarding the Company, the Shares, and the terms of this transaction that the Buyer deems necessary or appropriate to enable the Buyer to make an informed investment decision. The Buyer has been afforded the opportunity to ask questions of and receive answers from the Seller and the Company concerning the Company and the Shares.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.6 Independent Investigation.</strong> The Buyer has conducted its own independent investigation, review, and analysis of the business, operations, assets, liabilities, results of operations, financial condition, and prospects of the Company. The Buyer acknowledges that it is not relying on any representations or warranties of the Seller except as expressly set forth in this Agreement.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.7 Financial Capability.</strong> The Buyer has adequate financial resources and liquid assets available to pay the Purchase Price in full on the Closing Date and to fulfill all other obligations under this Agreement.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.8 Understanding of Securities Laws.</strong> The Buyer understands that: (a) the Shares have not been registered under the Securities Act of 1933 or any state securities laws; (b) the Shares are being offered and sold in reliance on exemptions from registration requirements; (c) the Shares may be subject to restrictions on transfer under applicable securities laws; and (d) the Buyer may not be able to liquidate its investment in the Shares readily or at all.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.9 No Conflicts or Violations.</strong> The execution, delivery, and performance of this Agreement by the Buyer does not and will not violate any agreement, contract, judgment, order, decree, statute, law, rule, or regulation applicable to the Buyer.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.10 Legal and Tax Advice.</strong> The Buyer has been advised to consult, and has had the opportunity to consult, with the Buyer's own legal, tax, and financial advisors regarding the legal, tax, and financial consequences of this investment.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>6.11 No Government Recommendation.</strong> The Buyer understands that no federal or state agency has passed upon or made any recommendation or endorsement of the Shares or the fairness or suitability of the investment in the Shares.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 7: CONDITIONS TO CLOSING</h2>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>7.1 Conditions to Buyer's Obligations.</strong> The obligations of the Buyer to consummate the purchase of the Shares and to take the other actions required at the Closing are subject to the satisfaction, at or before the Closing, of each of the following conditions (any of which may be waived by the Buyer in whole or in part):</p>
+                <ul>
+                    <li><strong>Accuracy of Representations.</strong> The representations and warranties of the Seller contained in this Agreement shall be true and correct in all material respects as of the Closing Date, with the same effect as though such representations and warranties had been made on and as of the Closing Date.</li>
+                    <li><strong>Performance of Obligations.</strong> The Seller shall have performed and complied in all material respects with all obligations and covenants required by this Agreement to be performed or complied with by the Seller on or before the Closing Date.</li>
+                    <li><strong>Delivery of Documents.</strong> The Seller shall have delivered or caused to be delivered to the Buyer all documents, instruments, and certificates required under Article 4 of this Agreement.</li>
+                    <li><strong>No Material Adverse Change.</strong> Since the date of this Agreement, there shall have been no material adverse change in the business, operations, properties, assets, or condition (financial or otherwise) of the Company.</li>
+                    <li><strong>Consents and Approvals.</strong> All consents, approvals, authorizations, and clearances required from any governmental authority or third party for the consummation of the transactions contemplated by this Agreement shall have been obtained and shall be in full force and effect.</li>
+                    <li><strong>No Litigation.</strong> No action, suit, or proceeding shall be pending or threatened before any court or governmental authority seeking to restrain, prohibit, or obtain damages with respect to this Agreement or the consummation of the transactions contemplated hereby.</li>
+                    <li><strong>Legal Opinion.</strong> The Buyer shall have received a legal opinion from counsel to the Seller, in form and substance reasonably satisfactory to the Buyer, covering such matters as the Buyer may reasonably request.</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>7.2 Conditions to Seller's Obligations.</strong> The obligations of the Seller to consummate the sale of the Shares and to take the other actions required at the Closing are subject to the satisfaction, at or before the Closing, of each of the following conditions (any of which may be waived by the Seller in whole or in part):</p>
+                <ul>
+                    <li><strong>Accuracy of Representations.</strong> The representations and warranties of the Buyer contained in this Agreement shall be true and correct in all material respects as of the Closing Date.</li>
+                    <li><strong>Performance of Obligations.</strong> The Buyer shall have performed and complied in all material respects with all obligations and covenants required by this Agreement to be performed or complied with by the Buyer on or before the Closing Date.</li>
+                    <li><strong>Receipt of Purchase Price.</strong> The Seller shall have received the full Purchase Price in immediately available funds in accordance with Article 3.</li>
+                    <li><strong>Consents and Approvals.</strong> All consents, approvals, authorizations, and clearances required from any governmental authority or third party for the consummation of the transactions contemplated by this Agreement shall have been obtained.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 8: INDEMNIFICATION</h2>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>8.1 Indemnification by Seller.</strong> The Seller agrees to indemnify, defend, and hold harmless the Buyer and the Buyer's officers, directors, employees, agents, affiliates, successors, and assigns (collectively, the "Buyer Indemnified Parties") from and against any and all losses, damages, liabilities, deficiencies, claims, actions, judgments, settlements, interest, awards, penalties, fines, costs, and expenses of whatever kind (including reasonable attorneys' fees and costs of investigation) (collectively, "Losses") arising out of or resulting from:</p>
+                <ul>
+                    <li>Any breach or inaccuracy of any representation or warranty made by the Seller in this Agreement;</li>
+                    <li>Any breach or non-fulfillment of any covenant, agreement, or obligation of the Seller under this Agreement;</li>
+                    <li>Any claims by third parties relating to the Shares or the Company arising prior to the Closing Date;</li>
+                    <li>Any misrepresentation or omission of any material fact by the Seller.</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>8.2 Indemnification by Buyer.</strong> The Buyer agrees to indemnify, defend, and hold harmless the Seller and the Seller's officers, directors, employees, agents, affiliates, successors, and assigns (collectively, the "Seller Indemnified Parties") from and against any and all Losses arising out of or resulting from:</p>
+                <ul>
+                    <li>Any breach or inaccuracy of any representation or warranty made by the Buyer in this Agreement;</li>
+                    <li>Any breach or non-fulfillment of any covenant, agreement, or obligation of the Buyer under this Agreement;</li>
+                    <li>Any claims relating to the ownership, holding, or disposition of the Shares by the Buyer after the Closing;</li>
+                    <li>Any misrepresentation or omission of any material fact by the Buyer.</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>8.3 Notice and Defense of Claims.</strong> If any claim, demand, action, or proceeding is asserted or instituted by a third party with respect to which an indemnified party intends to seek indemnification (an "Indemnity Claim"), the indemnified party shall:</p>
+                <ul>
+                    <li>Promptly notify the indemnifying party in writing of the Indemnity Claim;</li>
+                    <li>Provide the indemnifying party with all information and documentation reasonably available concerning the Indemnity Claim;</li>
+                    <li>Permit the indemnifying party to assume control of the defense and settlement of the Indemnity Claim;</li>
+                    <li>Reasonably cooperate with the indemnifying party in the defense of the Indemnity Claim.</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>8.4 Settlement of Claims.</strong> The indemnifying party shall not settle any Indemnity Claim without the prior written consent of the indemnified party (which consent shall not be unreasonably withheld or delayed) if such settlement would: (a) impose any obligation on the indemnified party other than the payment of money for which the indemnified party will be fully indemnified; (b) include any admission of liability or wrongdoing by the indemnified party; or (c) not include an unconditional release of the indemnified party from all liability.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>8.5 Limitations on Indemnification.</strong> Notwithstanding anything to the contrary:</p>
+                <ul>
+                    <li>No claim for indemnification shall be made unless aggregate Losses exceed $10,000 (the "Basket"), after which the indemnifying party shall be liable for all Losses from the first dollar;</li>
+                    <li>The maximum aggregate liability of each Party for indemnification shall not exceed the Purchase Price (the "Cap");</li>
+                    <li>No claim for indemnification may be brought after the expiration of the survival period specified in this Agreement.</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>8.6 Exclusive Remedy.</strong> Except for claims of fraud or willful misconduct, and except for claims seeking specific performance or injunctive relief, the indemnification provisions of this Article 8 shall be the exclusive remedy of the Parties for any breach of this Agreement.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 9: COVENANTS</h2>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>9.1 Conduct Prior to Closing.</strong> Between the date of this Agreement and the Closing Date, the Seller covenants and agrees that it shall:</p>
+                <ul>
+                    <li>Use commercially reasonable efforts to preserve the Shares intact and maintain all rights associated therewith;</li>
+                    <li>Not sell, transfer, pledge, encumber, or otherwise dispose of the Shares or any interest therein;</li>
+                    <li>Promptly notify the Buyer of any material change affecting the Company or the Shares;</li>
+                    <li>Cooperate with the Buyer's due diligence investigation of the Company and the Shares.</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>9.2 Further Assurances.</strong> Following the Closing, each Party shall execute and deliver such additional documents, instruments, conveyances, and assurances and take such other actions as may be reasonably required to carry out the provisions of this Agreement and give effect to the transactions contemplated hereby.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>9.3 Public Announcements.</strong> Neither Party shall issue any press release or make any public announcement regarding this Agreement or the transactions contemplated hereby without the prior written consent of the other Party, except as may be required by applicable law or regulation.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>9.4 Confidentiality.</strong> Each Party shall keep confidential all non-public information obtained from the other Party in connection with this Agreement and shall not disclose such information to any third party without the prior written consent of the other Party, except as required by law.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>9.5 Non-Competition and Non-Solicitation.</strong> For a period of two (2) years following the Closing Date, the Seller agrees that it shall not, directly or indirectly:</p>
+                <ul>
+                    <li>Compete with the Company in any business substantially similar to the Company's business;</li>
+                    <li>Solicit or attempt to solicit any customers, clients, or business relationships of the Company;</li>
+                    <li>Solicit or attempt to hire any employees or consultants of the Company;</li>
+                    <li>Disparage or make any negative statements about the Company, its business, or its management.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 10: TERMINATION</h2>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>10.1 Termination Rights.</strong> This Agreement may be terminated at any time prior to the Closing:</p>
+                <ul>
+                    <li>By mutual written consent of the Seller and the Buyer;</li>
+                    <li>By either Party if the Closing has not occurred on or before thirty (30) days after the scheduled Closing Date, provided that the terminating Party is not in breach of this Agreement;</li>
+                    <li>By either Party if a court or governmental authority has issued a final, non-appealable order prohibiting the transactions contemplated by this Agreement;</li>
+                    <li>By the Buyer if there has been a material breach of any representation, warranty, or covenant of the Seller that has not been cured within ten (10) days after written notice;</li>
+                    <li>By the Seller if there has been a material breach of any representation, warranty, or covenant of the Buyer that has not been cured within ten (10) days after written notice.</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>10.2 Effect of Termination.</strong> In the event of termination pursuant to Section 10.1:</p>
+                <ul>
+                    <li>This Agreement shall become void and have no further effect, except for the provisions relating to confidentiality, expenses, and governing law, which shall survive;</li>
+                    <li>Each Party shall return to the other Party all documents, materials, and information received from such other Party;</li>
+                    <li>Neither Party shall have any liability to the other Party except for liabilities arising from willful breach of this Agreement prior to termination.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 11: GENERAL PROVISIONS</h2>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.1 Governing Law.</strong> This Agreement shall be governed by and construed in accordance with the internal laws of the State of New York, without giving effect to any choice or conflict of law provision or rule that would require or permit the application of the laws of any other jurisdiction.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.2 Jurisdiction and Venue.</strong> Each Party irrevocably submits to the exclusive jurisdiction of the state and federal courts located in New York for the purposes of any suit, action, or other proceeding arising out of this Agreement or any transaction contemplated hereby. Each Party agrees to commence any such action, suit, or proceeding only in such courts and waives any objection to venue or forum non conveniens.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.3 Waiver of Jury Trial.</strong> EACH PARTY HEREBY IRREVOCABLY AND UNCONDITIONALLY WAIVES ANY RIGHT IT MAY HAVE TO A TRIAL BY JURY IN RESPECT OF ANY LITIGATION DIRECTLY OR INDIRECTLY ARISING OUT OF OR RELATING TO THIS AGREEMENT OR THE TRANSACTIONS CONTEMPLATED HEREBY.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.4 Entire Agreement.</strong> This Agreement constitutes the entire agreement between the Parties concerning the subject matter hereof and supersedes all prior negotiations, representations, or agreements, whether written or oral. This Agreement may not be contradicted by evidence of prior, contemporaneous, or subsequent oral agreements of the Parties.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.5 Amendments and Waivers.</strong> No amendment, modification, or waiver of any provision of this Agreement shall be effective unless in writing and signed by both Parties. No waiver of any provision shall be deemed a waiver of any other provision, and no waiver shall constitute a continuing waiver unless otherwise expressly provided.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.6 Severability.</strong> If any provision of this Agreement is held to be invalid, illegal, or unenforceable by a court of competent jurisdiction, such provision shall be modified to the minimum extent necessary to make it valid and enforceable while preserving the Parties' intent. If such modification is not possible, the provision shall be severed and the remainder of this Agreement shall remain in full force and effect.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.7 Notices.</strong> All notices, requests, demands, and other communications required or permitted under this Agreement shall be in writing and shall be deemed given when: (a) delivered personally; (b) sent by confirmed facsimile or email; (c) received when sent by overnight courier; or (d) received when sent by certified or registered mail, postage prepaid, return receipt requested, addressed to the Parties at their addresses set forth in this Agreement or at such other address as a Party may specify by notice.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.8 Counterparts.</strong> This Agreement may be executed in one or more counterparts, each of which shall be deemed an original but all of which together shall constitute one and the same instrument. Counterparts may be delivered via facsimile, email (including PDF or similar electronic format), or other transmission method, and any counterpart so delivered shall be deemed to have been duly and validly delivered and be valid and effective for all purposes.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.9 Assignment.</strong> Neither Party may assign, delegate, or transfer any of its rights or obligations under this Agreement without the prior written consent of the other Party. Any attempted assignment in violation of this provision shall be void. Subject to the foregoing, this Agreement shall bind and inure to the benefit of the Parties and their respective successors and permitted assigns.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.10 Third-Party Beneficiaries.</strong> This Agreement is for the sole benefit of the Parties and their permitted successors and assigns, and nothing herein, express or implied, is intended to or shall confer upon any other person or entity any legal or equitable right, benefit, or remedy of any nature whatsoever under or by reason of this Agreement.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.11 Expenses.</strong> Except as otherwise provided in this Agreement, each Party shall bear its own costs and expenses (including legal fees and expenses) incurred in connection with this Agreement and the transactions contemplated hereby.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.12 Construction.</strong> The Parties have participated jointly in the negotiation and drafting of this Agreement. If an ambiguity or question of intent or interpretation arises, this Agreement shall be construed as if drafted jointly by the Parties, and no presumption or burden of proof shall arise favoring or disfavoring any Party by virtue of the authorship of any provisions.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.13 Time of Essence.</strong> Time is of the essence with respect to the performance of each Party's obligations under this Agreement.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>11.14 Survival.</strong> The representations, warranties, covenants, and agreements contained in this Agreement shall survive the Closing for the periods specified herein, and if no period is specified, for a period of two (2) years from the Closing Date, except that representations regarding title to the Shares shall survive indefinitely.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>ARTICLE 12: ADDITIONAL DEFINITIONS</h2>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>12.1 "Affiliate"</strong> means, with respect to any Person, any other Person that directly or indirectly controls, is controlled by, or is under common control with such Person.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>12.2 "Control"</strong> (including "controlled by" and "under common control with") means the possession, direct or indirect, of the power to direct or cause the direction of the management and policies of a Person, whether through ownership of voting securities, by contract, or otherwise.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>12.3 "Knowledge"</strong> means, with respect to a Party, the actual knowledge of such Party's officers, directors, and key management personnel after reasonable inquiry.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>12.4 "Person"</strong> means an individual, corporation, partnership, limited liability company, association, trust, or other entity or organization, including a government or political subdivision or an agency or instrumentality thereof.</p>
+            </div>
+            
+            <div class="subsection">
+                <p class="section-text"><strong>12.5 "Material Adverse Effect"</strong> means any effect, change, event, or circumstance that, individually or in the aggregate, has or would reasonably be expected to have a material adverse effect on the business, assets, liabilities, financial condition, or results of operations of the Company.</p>
+            </div>
+        </div>
+
+        <!-- EXECUTION SECTION (Original content continues here) -->
         <div class="signature-section">
             <h2>EXECUTION</h2>
             <p class="section-text">IN WITNESS WHEREOF, the Parties have executed this Share Purchase Agreement as of the date first written above.</p>
@@ -556,6 +1052,7 @@
                 <div class="signature-line"></div>
                 <div class="signature-info">
                     <p><strong>Name:</strong> <span id="displayBuyerSig">Solomon John</span></p>
+                    <p><strong>Address:</strong> <span id="displayBuyerSigAddress">456 Investment Street, Apartment 12B, New York, NY 10002</span></p>
                 </div>
                 <div style="margin-top: 1.5rem;">
                     <p style="font-size: 0.75rem; color: #64748b;">Date: _______________</p>
@@ -623,6 +1120,7 @@
             const sellerName = document.getElementById('sellerName').value;
             const sellerCompany = document.getElementById('sellerCompany').value;
             const buyerName = document.getElementById('buyerName').value;
+            const buyerAddress = document.getElementById('buyerAddress').value;
             const sharePrice = parseFloat(document.getElementById('sharePrice').value);
             const totalShares = parseFloat(document.getElementById('totalShares').value);
             const agreementDate = document.getElementById('agreementDate').value;
@@ -633,6 +1131,7 @@
             document.getElementById('displaySellerName').textContent = sellerName;
             document.getElementById('displaySellerCompany').textContent = sellerCompany;
             document.getElementById('displayBuyerName').textContent = buyerName;
+            document.getElementById('displayBuyerAddress').textContent = buyerAddress;
             document.getElementById('displayCompany2').textContent = sellerCompany;
             document.getElementById('displayShares').textContent = formatNumber(totalShares);
             document.getElementById('displayPrice').textContent = formatCurrency(sharePrice);
@@ -642,6 +1141,7 @@
             document.getElementById('displaySellerSig').textContent = sellerName;
             document.getElementById('displayCompanySig').textContent = sellerCompany;
             document.getElementById('displayBuyerSig').textContent = buyerName;
+            document.getElementById('displayBuyerSigAddress').textContent = buyerAddress;
             
             // Update recitals
             document.getElementById('recitalCompany1').textContent = sellerCompany;
@@ -710,7 +1210,7 @@
         }
 
         // Add event listeners to all inputs
-        document.querySelectorAll('input').forEach(input => {
+        document.querySelectorAll('input, textarea').forEach(input => {
             input.addEventListener('input', updateDocument);
         });
 
